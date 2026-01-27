@@ -1,0 +1,11 @@
+[build]
+  publish = "fabric-frontend/build"
+  command = "cd fabric-frontend && npm run build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[build.environment]
+  REACT_APP_API_URL = "https://your-backend-url.railway.app"
