@@ -6,12 +6,12 @@ const getApiBaseUrl = () => {
   if (process.env.REACT_APP_API_URL) {
     return process.env.REACT_APP_API_URL;
   }
-  
+
   // Development fallback
   if (process.env.NODE_ENV === 'development') {
     return 'http://localhost:8080';
   }
-  
+
   // Production fallback - replace with your actual backend URL
   return 'https://your-backend-url.railway.app';
 };
@@ -45,15 +45,15 @@ const handleTokenError = (isExpired = false) => {
   // Clear all auth data
   localStorage.removeItem('token');
   localStorage.removeItem('user');
-  
+
   // Show specific error message
   const message = isExpired ? 'Token expired. Please log in again.' : 'Invalid token. Please log in again.';
-  
+
   // Only show message if not already on login page
   if (window.location.pathname !== '/login') {
     alert(message);
   }
-  
+
   // Redirect to login page
   window.location.href = '/login';
 };
@@ -89,12 +89,12 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       const token = localStorage.getItem('token');
       let isExpired = false;
-      
+
       // Check backend response for specific error type
       const errorData = error.response?.data;
       const errorMessage = errorData?.message || '';
       const errorType = errorData?.errorType;
-      
+
       // Determine if token is expired or invalid based on backend response
       if (errorType === 'EXPIRED' || errorMessage.toLowerCase().includes('expired')) {
         isExpired = true;
@@ -110,22 +110,22 @@ api.interceptors.response.use(
           }
         }
       }
-      
+
       handleTokenError(isExpired);
-      
+
       return Promise.reject(error);
     }
-    
+
     // Handle 403 Forbidden (insufficient permissions)
     if (error.response?.status === 403) {
       const message = error.response?.data?.message || 'Access denied. You do not have permission to perform this action.';
       alert(message);
     }
-    
+
     return Promise.reject(error);
   }
 );
-    
+
 
 // Auth API
 export const authAPI = {
@@ -205,7 +205,7 @@ export const pieceAPI = {
     });
   },
   downloadExcel: (productId = null) => {
-    const url = productId 
+    const url = productId
       ? `/users/downloadPieceExcel?productId=${productId}`
       : '/users/downloadPieceExcel';
     return api.get(url, { responseType: 'blob' });
@@ -216,7 +216,7 @@ export const pieceAPI = {
 
 export const meterAPI = {
   create: (data) => api.post('/users/savemeter', data),
-  getTotalCost: (workerId, weekStart) => 
+  getTotalCost: (workerId, weekStart) =>
     api.get(`/users/gettotalcost?workerId=${workerId}&weekStart=${weekStart}`),
   uploadExcel: (file) => {
     const formData = new FormData();
@@ -230,7 +230,7 @@ export const meterAPI = {
 };
 
 export const fileAPI = {
-  storeBill: (imageData, workerName, weekStartDate, workerId) => 
+  storeBill: (imageData, workerName, weekStartDate, workerId) =>
     api.post('/users/storeBill', {
       imageData,
       workerName,
@@ -251,7 +251,7 @@ export const fileAPI = {
 export const flexibleShiftAPI = {
   // Create flexible assignment (weekly or custom range)
   createFlexibleAssignment: (data) => api.post('/user/shifts/assign', data),
-  
+
   // Create weekly assignment (Saturday to Friday)
   createWeeklyAssignment: (workerId, machineId, shiftId, weekStartDate, calculationWeeks = 1) => {
     const params = new URLSearchParams({
@@ -263,7 +263,7 @@ export const flexibleShiftAPI = {
     });
     return api.post(`/users/shifts/assign-weekly?${params.toString()}`);
   },
-  
+
   // Create custom range assignment
   createCustomRangeAssignment: (workerId, machineId, shiftId, startDate, endDate, calculationWeeks = 1) => {
     const params = new URLSearchParams({
@@ -276,17 +276,16 @@ export const flexibleShiftAPI = {
     });
     return api.post(`/users/shifts/assign-custom?${params.toString()}`);
   },
-  
+
   // Get worker assignments for a period
-  getWorkerAssignments: (workerId, startDate, endDate) => {
+  getWorkerAssignments: (startDate, endDate) => {
     const params = new URLSearchParams({
-      workerId: workerId.toString(),
       startDate: startDate,
       endDate: endDate
     });
-    return api.get(`/users/shifts/worker-assignments?${params.toString()}`);
+    return api.get(`/users/shifts/all-worker-assignments?${params.toString()}`);
   },
-  
+
   // Calculate weekly salary (Saturday to Friday)
   calculateWeeklySalary: (weekEndDate) => {
     const params = new URLSearchParams({
@@ -294,7 +293,7 @@ export const flexibleShiftAPI = {
     });
     return api.post(`/users/calculate-weekly-salary?${params.toString()}`);
   },
-  
+
   // Calculate bi-weekly salary (2 weeks) - using custom period with 2 weeks
   calculateBiWeeklySalary: (periodEndDate) => {
     const startDate = new Date(periodEndDate);
@@ -305,7 +304,7 @@ export const flexibleShiftAPI = {
     });
     return api.post(`/users/calculate-custom-salary?${params.toString()}`);
   },
-  
+
   // Calculate custom period salary
   calculateCustomPeriodSalary: (startDate, endDate) => {
     const params = new URLSearchParams({
@@ -353,6 +352,27 @@ export const roleAPI = {
   getAll: () => api.get('/admin/getrole'),
   getById: (id) => api.get(`/admin/getrole?id=${id}`),
   create: (data) => api.post('/admin/roles', data)
+};
+
+export const ExpenseAPI = {
+  getAllExpenses: ({ year, month, startDate, endDate } = {}) => {
+    const params = new URLSearchParams();
+
+    if (year !== null && year !== '') params.append('year', year);
+    if (month !== null && month !== '') params.append('month', month);
+    if (startDate) params.append('startDate', startDate);
+    if (endDate) params.append('endDate', endDate);
+
+    const queryString = params.toString();
+    const url = queryString
+      ? `/users/getExpenses?${queryString}`
+      : `/users/getExpenses`;
+
+    return api.get(url);
+  },
+
+  getExpenseTypes: () => api.get('/users/expenseType'),
+  addExpense: (data) => api.post('/users/addExpenses', data)
 };
 
 // Admin Registration API

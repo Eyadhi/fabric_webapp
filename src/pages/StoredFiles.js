@@ -23,7 +23,7 @@ const StoredFiles = () => {
         fileAPI.getAllBills(),
         fileAPI.getAllExcelUploads()
       ]);
-      
+
       setBills(billsResponse.data?.data || billsResponse.data || []);
       setExcelUploads(excelResponse.data?.data || excelResponse.data || []);
     } catch (error) {
@@ -45,7 +45,7 @@ const StoredFiles = () => {
   const handleDownload = async (fileId, fileName) => {
     try {
       const response = await fileAPI.downloadFile(fileId);
-      
+
       // Create blob URL and download
       const blob = new Blob([response.data]);
       const url = window.URL.createObjectURL(blob);
@@ -56,7 +56,7 @@ const StoredFiles = () => {
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
-      
+
       toast.success('File downloaded successfully!');
     } catch (error) {
       toast.error('Failed to download file');
@@ -108,14 +108,14 @@ const StoredFiles = () => {
       <div className="flex justify-between items-center mb-20">
         <h1>Stored Files</h1>
         <div className="flex gap-10">
-          <button 
+          <button
             onClick={() => setActiveTab('bills')}
             className={`btn ${activeTab === 'bills' ? 'btn-primary' : 'btn-secondary'}`}
           >
             <Image size={16} style={{ marginRight: '5px' }} />
             Bills ({bills.length})
           </button>
-          <button 
+          <button
             onClick={() => setActiveTab('excel')}
             className={`btn ${activeTab === 'excel' ? 'btn-primary' : 'btn-secondary'}`}
           >
@@ -151,7 +151,7 @@ const StoredFiles = () => {
                 style={{ width: '150px' }}
                 placeholder="Filter by week"
               />
-              <button 
+              <button
                 onClick={() => {
                   setFilterWorker('');
                   setFilterWeek('');
@@ -206,16 +206,16 @@ const StoredFiles = () => {
                     </td>
                     <td>
                       <div className="flex gap-5">
-                        <button 
+                        <button
                           onClick={() => handleDownload(bill.id, bill.originalName || bill.fileName)}
-                          className="btn btn-primary" 
+                          className="btn btn-primary"
                           style={{ fontSize: '12px', padding: '5px 10px' }}
                         >
                           <Download size={12} />
                         </button>
-                        <button 
+                        <button
                           onClick={() => handleDelete(bill.id, bill.originalName || bill.fileName)}
-                          className="btn btn-danger" 
+                          className="btn btn-danger"
                           style={{ fontSize: '12px', padding: '5px 10px' }}
                         >
                           <Trash2 size={12} />
@@ -233,7 +233,7 @@ const StoredFiles = () => {
       {activeTab === 'excel' && (
         <div className="card">
           <h3>Excel Uploads</h3>
-          
+
           {excelUploads.length === 0 ? (
             <p style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
               No Excel uploads found. Upload meter data to see files here.
@@ -269,16 +269,16 @@ const StoredFiles = () => {
                     </td>
                     <td>
                       <div className="flex gap-5">
-                        <button 
+                        <button
                           onClick={() => handleDownload(upload.id, upload.originalName)}
-                          className="btn btn-primary" 
+                          className="btn btn-primary"
                           style={{ fontSize: '12px', padding: '5px 10px' }}
                         >
                           <Download size={12} />
                         </button>
-                        <button 
+                        <button
                           onClick={() => handleDelete(upload.id, upload.originalName)}
-                          className="btn btn-danger" 
+                          className="btn btn-danger"
                           style={{ fontSize: '12px', padding: '5px 10px' }}
                         >
                           <Trash2 size={12} />
@@ -292,18 +292,6 @@ const StoredFiles = () => {
           )}
         </div>
       )}
-
-      {/* Info Box */}
-      <div className="card mt-20" style={{ backgroundColor: '#f8f9fa', border: '1px solid #dee2e6' }}>
-        <h4 style={{ color: '#495057', marginBottom: '10px' }}>File Storage Information:</h4>
-        <ul style={{ color: '#6c757d', fontSize: '14px', lineHeight: '1.6' }}>
-          <li><strong>Bills:</strong> Generated production bills are automatically stored on the server when created</li>
-          <li><strong>Excel Uploads:</strong> All uploaded meter data files are preserved for future reference</li>
-          <li><strong>Download:</strong> Click the download button to get a copy of any stored file</li>
-          <li><strong>Delete:</strong> Remove files you no longer need (this action cannot be undone)</li>
-          <li><strong>Filters:</strong> Use worker and week filters to quickly find specific bills</li>
-        </ul>
-      </div>
     </div>
   );
 };

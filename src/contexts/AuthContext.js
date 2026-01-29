@@ -32,12 +32,12 @@ const isJWTExpired = (token) => {
 const handleAuthError = (message) => {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
-  
+
   // Only show message if not already on login page
   if (window.location.pathname !== '/login') {
     alert(message);
   }
-  
+
   window.location.href = '/login';
 };
 
@@ -50,12 +50,12 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setUser(null);
-    
+
     // Only show message if not already on login page
     if (window.location.pathname !== '/login') {
       alert(message);
     }
-    
+
     window.location.href = '/login';
   };
 
@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
   const validateToken = () => {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
-    
+
     if (!token || token === 'undefined' || token === 'null') {
       return false;
     }
@@ -94,7 +94,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
-    
+
     if (token && token !== 'undefined' && token !== 'null' && userData) {
       if (validateToken()) {
         try {
@@ -129,17 +129,17 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     try {
       const response = await authAPI.login(credentials);
-      
+
       // Handle the ApiResponse wrapper structure
       const responseData = response.data.data || response.data;
-      
+
       // Handle different possible response structures
       let token, userData;
-      
+
       if (responseData.token) {
         // If token is directly in responseData
         token = responseData.token;
-        userData = { 
+        userData = {
           username: responseData.username,
           tokenExpiry: responseData.tokenExpiry,
           role: responseData.role || 'user',
@@ -158,13 +158,13 @@ export const AuthProvider = ({ children }) => {
       } else {
         // If the entire response is the token
         token = responseData;
-        userData = { 
+        userData = {
           username: credentials.username,
           role: 'user',
           roleId: 2
         };
       }
-      
+
       // Decode JWT to get role information if not provided
       if (!userData.role || !userData.roleId) {
         try {
@@ -177,15 +177,15 @@ export const AuthProvider = ({ children }) => {
           userData.role = 'user';
         }
       }
-      
+
       if (!token) {
         throw new Error('No token received from server');
       }
-      
+
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
-      
+
       return response;
     } catch (error) {
       throw error;
@@ -208,7 +208,7 @@ export const AuthProvider = ({ children }) => {
 
   const hasPermission = (permission) => {
     if (!user) return false;
-    
+
     switch (permission) {
       case 'create_role':
       case 'create_shift':

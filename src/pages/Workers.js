@@ -21,7 +21,8 @@ const Workers = () => {
   const fetchWorkers = async () => {
     try {
       const response = await workerAPI.getAll();
-      setWorkers(response.data || []);
+      // Ensure workers is always an array
+      setWorkers(Array.isArray(response.data.data) ? response.data.data : []);
     } catch (error) {
       toast.error('Failed to fetch workers');
     } finally {

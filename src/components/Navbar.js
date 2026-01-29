@@ -23,54 +23,53 @@ const Navbar = () => {
         <Link to="/" className="navbar-brand">
           Fabric Management System
         </Link>
-        
+
         {user && (
           <div className="flex items-center gap-10">
             <ul className="navbar-nav">
               <li>
-                <Link 
-                  to="/" 
+                <Link
+                  to="/"
                   className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}
                 >
                   Dashboard
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/workers" 
+                <Link
+                  to="/workers"
                   className={`nav-link ${location.pathname === '/workers' ? 'active' : ''}`}
                 >
                   Workers
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/products" 
+                <Link
+                  to="/products"
                   className={`nav-link ${location.pathname === '/products' ? 'active' : ''}`}
                 >
                   Products
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/meters" 
+                <Link
+                  to="/meters"
                   className={`nav-link ${location.pathname === '/meters' ? 'active' : ''}`}
                 >
                   Machines
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/flexible-shifts" 
-                  className={`nav-link ${location.pathname === '/flexible-shifts' ? 'active' : ''}`}
+                <Link
+                  to="/expenses"
+                  className={`nav-link ${location.pathname === '/expenses' ? 'active' : ''}`}
                 >
-                  <Calendar size={16} style={{ marginRight: '5px' }} />
-                  Shifts & Salary
+                  Expenses
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/stored-files" 
+                <Link
+                  to="/stored-files"
                   className={`nav-link ${location.pathname === '/stored-files' ? 'active' : ''}`}
                 >
                   <Archive size={16} style={{ marginRight: '5px' }} />
@@ -78,8 +77,8 @@ const Navbar = () => {
                 </Link>
               </li>
             </ul>
-            
-            <button 
+
+            <button
               onClick={handleLogout}
               className="btn btn-secondary flex items-center gap-10"
             >

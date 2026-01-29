@@ -17,21 +17,21 @@ const Layout = ({ children }) => {
   return (
     <div className="app-layout">
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
-      
+
       <div className={`main-content ${isCollapsed ? 'sidebar-collapsed' : ''}`}>
         {/* Top Header */}
         <header className="top-header">
           <div className="header-left">
             <h1 className="page-title">Fabric Management System</h1>
           </div>
-          
+
           <div className="header-right">
             <div className="header-actions">
-              <button className="header-btn notification-btn">
+              {/* <button className="header-btn notification-btn">
                 <Bell size={20} />
                 <span className="notification-badge">3</span>
-              </button>
-              
+              </button> */}
+
               <div className="user-menu">
                 <div className="user-info">
                   <div className="user-avatar">
@@ -42,8 +42,8 @@ const Layout = ({ children }) => {
                     <span className="user-role">Administrator</span>
                   </div>
                 </div>
-                
-                <button 
+
+                <button
                   onClick={handleLogout}
                   className="logout-btn"
                   title="Logout"

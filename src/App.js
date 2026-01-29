@@ -17,6 +17,7 @@ import ShiftAssignment from './pages/ShiftAssignment';
 import SalaryCalculation from './pages/SalaryCalculation';
 import Roles from './pages/Roles';
 import AdminUsers from './pages/AdminUsers';
+import Expenses from './pages/Expenses';
 
 function App() {
   return (
@@ -92,6 +93,13 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <SalaryCalculation />
+                </Layout>
+              </ProtectedRoute>
+            } />
+            <Route path="/expenses" element={
+              <ProtectedRoute>
+                <Layout>
+                  <Expenses />
                 </Layout>
               </ProtectedRoute>
             } />
