@@ -7,10 +7,10 @@ const getApiBaseUrl = () => {
     return process.env.REACT_APP_API_URL;
   }
 
-  // Development fallback
-  if (process.env.NODE_ENV === 'development') {
-    return 'http://localhost:8080';
-  }
+  // // Development fallback
+  // if (process.env.NODE_ENV === 'development') {
+  //   return 'http://localhost:8080';
+  // }
 
   // Production fallback - replace with your actual backend URL
   return 'https://fabric-backend-api.onrender.com';
