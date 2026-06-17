@@ -13,7 +13,8 @@ const getApiBaseUrl = () => {
   }
 
   // Production fallback - replace with your actual backend URL
-  return 'https://your-backend-url.railway.app';
+  return 'https://fabric-backend-api.onrender.com';
+  // return 'https://your-backend-url.railway.app';
 };
 
 const API_BASE_URL = getApiBaseUrl();
